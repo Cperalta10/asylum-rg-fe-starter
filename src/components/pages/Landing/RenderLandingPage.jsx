@@ -110,6 +110,8 @@ function RenderLandingPage(props) {
               border: '0',
               backgroundColor: '#404C4A',
               color: '#FFFFFF',
+              fontSize: '16px',
+              padding: '.2rem 1rem .2rem 1rem',
             }}
           >
             Read More
