@@ -50,7 +50,12 @@ function GraphWrapper(props) {
         break;
     }
   }
-  function updateStateWithNewData(years, view, office, stateSettingCallback) {
+  async function updateStateWithNewData(
+    years,
+    view,
+    office,
+    stateSettingCallback
+  ) {
     /*
           _                                                                             _
         |                                                                                 |
@@ -74,36 +79,42 @@ function GraphWrapper(props) {
     */
 
     if (office === 'all' || !office) {
-      axios
-        .get(process.env.REACT_APP_API_URI, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+      const fiscalSummary = await axios.get(
+        `${process.env.REACT_APP_API_URI}/fiscalSummary`,
+        {
           params: {
             from: years[0],
             to: years[1],
           },
-        })
-        .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+        }
+      );
+
+      const citizenshipSummary = await axios.get(
+        `${process.env.REACT_APP_API_URI}/citizenshipSummary`
+      );
+
+      stateSettingCallback(view, office, [
+        { ...fiscalSummary.data, citizenshipResults: citizenshipSummary.data },
+      ]);
     } else {
-      axios
-        .get(process.env.REACT_APP_API_URI, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+      const fiscalSummary = await axios.get(
+        `${process.env.REACT_APP_API_URI}/fiscalSummary`,
+        {
           params: {
             from: years[0],
             to: years[1],
             office: office,
           },
-        })
-        .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+        }
+      );
+
+      const citizenshipSummary = await axios.get(
+        `${process.env.REACT_APP_API_URI}/citizenshipSummary`
+      );
+
+      stateSettingCallback(view, office, [
+        { ...fiscalSummary.data, citizenshipResults: citizenshipSummary.data },
+      ]);
     }
   }
   const clearQuery = (view, office) => {

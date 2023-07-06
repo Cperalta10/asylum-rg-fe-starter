@@ -155,6 +155,9 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
 
       case 'citizenship':
         rowsForTable = [];
+
+        console.log(data[0]);
+
         for (let item of data[0].citizenshipResults) {
           rowItem = {
             Citizenship: item.citizenship,

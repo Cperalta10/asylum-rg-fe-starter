@@ -13,6 +13,7 @@ import { colors } from '../../../styles/data_vis_colors';
 const { primary_accent_color } = colors;
 
 const mapStateToProps = (state, ownProps) => {
+  //   console.log(state);
   const { view, office } = ownProps;
   if (office === 'all' || !office) {
     switch (view) {
